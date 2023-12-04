@@ -11,17 +11,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.kpass.ctv.ui.theme.CtvTheme
+import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val coroutineScope = rememberCoroutineScope()
+            var selectedTab: NavGroup by remember { mutableStateOf(NavGroup.Home.MAIN) }
             CtvTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -30,13 +39,19 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         bottomBar = {
-                            BottomNavigation(selectedTabCallback = {}, navController = navController)
+                            BottomNavigation(
+                                selectedTab = selectedTab,
+                                selectedTabCallback = {
+                                    coroutineScope.launch {
+                                        selectedTab = it
+                                    }
+                                }, navController = navController)
                         }
                     ) {
                         Column(
                             modifier = Modifier.padding(it)
                         ) {
-
+                            NavigationGraph(navController)
                         }
                     }
                 }
