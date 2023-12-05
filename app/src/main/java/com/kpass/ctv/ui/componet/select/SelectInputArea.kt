@@ -3,9 +3,6 @@ package com.kpass.ctv.ui.componet.select
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -60,9 +57,18 @@ import com.kpass.ctv.ui.theme.CtvTheme
 @Preview(showSystemUi = true)
 @Composable
 private fun previews() {
-    CtvButtonSelectMenu(itemList = listOf("테스트", "테스트1", "테스트2"), onSelectItemListener = {
-        
-    })
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        CtvButtonSelectMenu(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            itemList = listOf("테스트", "테스트1", "테스트2"),
+            onSelectItemListener = {
+
+            }
+        )
+    }
 }
 
 
@@ -89,18 +95,17 @@ fun CtvButtonSelectMenu(
             shape = RoundedCornerShape(15.dp),
             onClick = { isDropDownMenuExpanded = true }
         ) {
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier) {
                 Body(
                     modifier = Modifier
-                        .align(Alignment.CenterStart)
                         .padding(
                             start = 0.dp
                         ),
                     text = buttonText
                 )
+                Spacer(modifier = Modifier.width(8.dp))
                 Image(
                     modifier = Modifier
-                        .align(Alignment.CenterEnd)
                         .padding(
                             end = 0.dp
                         ),
