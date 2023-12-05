@@ -7,24 +7,26 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.dp
 
 object CtvRadius {
-    val small = 5.dp
-    val semiMiddle = 10.dp
+    val small = 4.dp
+    val normal = 8.dp
     val middle = 12.dp
-    val semiLarge = 16.dp
-    val large = 20.dp
+    val veryLarge = 16.dp
+    val infinity = 9999.dp
 }
 
 class CtvShape(
     val small: CornerBasedShape =
         RoundedCornerShape(CtvRadius.small),
-    val semiMiddle: CornerBasedShape =
-        RoundedCornerShape(CtvRadius.semiMiddle),
+    val normal: CornerBasedShape =
+        RoundedCornerShape(CtvRadius.normal),
     val middle: CornerBasedShape =
         RoundedCornerShape(CtvRadius.middle),
-    val semiLarge: CornerBasedShape =
-        RoundedCornerShape(CtvRadius.semiLarge),
     val large: CornerBasedShape =
-        RoundedCornerShape(CtvRadius.large),
+        RoundedCornerShape(CtvRadius.middle),
+    val veryLarge: CornerBasedShape =
+        RoundedCornerShape(CtvRadius.infinity),
+    val infinity: CornerBasedShape =
+        RoundedCornerShape(CtvRadius.infinity),
     val circle: CornerBasedShape = CircleShape
 )
 

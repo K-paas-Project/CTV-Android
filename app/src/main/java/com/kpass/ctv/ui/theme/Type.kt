@@ -65,7 +65,7 @@ object CtvTypography {
     @Stable
     val body = TextStyle(
         fontFamily = pretendard,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.sp,

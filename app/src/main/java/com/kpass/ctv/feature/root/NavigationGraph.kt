@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.kpass.ctv.feature.home.HomeScreen
 
 @Composable
 fun NavigationGraph(
@@ -15,9 +16,10 @@ fun NavigationGraph(
     NavHost(navController = navController, startDestination = NavGroup.Home.MAIN.name) {
 
         composable(NavGroup.Home.MAIN.name) {
-            Button(onClick = { navController.navigate(NavGroup.Home.INFO.name) }) {
-                Text(text = "123213213")
-            }
+            HomeScreen(navController = navController)
+//            Button(onClick = { navController.navigate(NavGroup.Home.INFO.name) }) {
+//                Text(text = "123213213")
+//            }
         }
         composable(NavGroup.Home.INFO.name) {
             Text(text = "22132132222")

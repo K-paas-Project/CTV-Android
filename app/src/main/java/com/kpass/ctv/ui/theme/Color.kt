@@ -9,6 +9,7 @@ object CtvColor {
 
     val Red = Color(0xFFF93C3C)
     val Blue = Color(0xFF2E81E4)
+    val Green = Color(0xFF17D987)
 
     val BlueGray = Color(0xFFF4F5F9)
 
