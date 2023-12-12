@@ -50,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.google.accompanist.web.AccompanistWebChromeClient
 
 import com.google.accompanist.web.WebContent
@@ -57,6 +58,7 @@ import com.google.accompanist.web.WebView
 import com.google.accompanist.web.WebViewState
 import com.google.accompanist.web.rememberWebViewState
 import com.kpass.ctv.R
+import com.kpass.ctv.feature.root.LocalNavigationState
 import com.kpass.ctv.ui.componet.button.ButtonType
 import com.kpass.ctv.ui.componet.button.CtvImageButton
 import com.kpass.ctv.ui.componet.modifier.ctvClickable
@@ -66,26 +68,42 @@ import com.kpass.ctv.ui.theme.CtvShape
 import com.kpass.ctv.ui.theme.CtvTheme
 import com.kpass.ctv.ui.theme.CtvTypography
 import com.kpass.ctv.ui.theme.CustomText
+import com.kpass.ctv.utiles.getCategoryBackgroundColor
+import com.kpass.ctv.utiles.getCategoryColor
 import com.kpass.ctv.utiles.setStatusBarOrigin
 import com.kpass.ctv.utiles.setStatusBarTransparent
 import kotlinx.coroutines.launch
 
-@Preview
+//@Preview
 @Composable
 fun HomeInfoScreen(
     viewModel: HomeInfoViewModel = viewModel(),
+    navController: NavController,
+    category: String,
+    videoId: String,
+    location: String,
+    detailLocation: String
 ) {
     var isFullScreen by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-    val webViewState = rememberWebViewState(url = "http://223.130.136.187:8000/video2")
+    val webViewState = rememberWebViewState(url = "http://223.130.136.187:8000/$videoId")
     val context = LocalContext.current
+    val test = LocalNavigationState.current
     NotFullScreen(
         webViewState = webViewState,
         isFullScreen = isFullScreen,
-        activity = context as Activity
+        activity = context as Activity,
+        category = category,
+        location = location,
+        detailLocation = detailLocation,
+        onClickWarring = {
+            Log.d("TAG", "HomeInfoScreen: $category $videoId")
+
+        }
     ) {
         coroutineScope.launch {
             isFullScreen = !isFullScreen
+            test.value = !test.value
         }
     }
 //    if (isFullScreen.not()) {
@@ -120,8 +138,12 @@ fun HomeInfoScreen(
 private fun NotFullScreen(
     webViewState: WebViewState,
     isFullScreen: Boolean,
+    category: String,
+    location: String,
+    detailLocation: String,
     activity: Activity,
-    onClickFull: () -> Unit
+    onClickWarring: () -> Unit,
+    onClickFull: () -> Unit,
 ) {
     val test = if (isFullScreen) Modifier.scale(16f/9f) else Modifier.aspectRatio(if (isFullScreen) 9f / 16f else 16f / 9f)
     var yPadding by remember { mutableStateOf(0f) }
@@ -212,7 +234,7 @@ private fun NotFullScreen(
             Spacer(modifier = Modifier.height(12.dp))
             CustomText(
                 modifier = Modifier.padding(horizontal = 24.dp),
-                text = "WBG vs T1 | 결승전 | 2023 월드 챔피언십",
+                text = location,
                 style = CtvTypography.body.copy(
                     fontWeight = FontWeight.Bold
                 )
@@ -220,7 +242,7 @@ private fun NotFullScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Caption(
                 modifier = Modifier.padding(horizontal = 24.dp),
-                text = "2023-11-19 13시 7분 31초",
+                text = detailLocation, // · 2023-11-19 13시 7분 31초",
                 textColor = Color(0xFF76767B)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -234,7 +256,7 @@ private fun NotFullScreen(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
                         .padding(bottom = 4.dp),
-                    text = "산불"
+                    text = category
                 )
                 CtvImageButton(
                     modifier = Modifier.align(Alignment.CenterEnd),
@@ -242,10 +264,9 @@ private fun NotFullScreen(
                     type = ButtonType.Red,
                     image = R.drawable.ic_warring,
                     contentPadding = PaddingValues(vertical = 13.dp, horizontal = 17.dp),
-                    shape = CtvTheme.shape.middle
-                ) {
-
-                }
+                    shape = CtvTheme.shape.middle,
+                    onClick = onClickWarring
+                )
             }
             Spacer(modifier = Modifier.height(24.dp))
             Divider(
@@ -265,13 +286,13 @@ private fun CategoryView(
 ) {
     Surface(
         modifier = modifier,
-        color = CtvColor.RedBackground,
+        color = text.getCategoryBackgroundColor(),
         shape = RoundedCornerShape(10.dp)
     ) {
         CustomText(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             text = text,
-            textColor = CtvColor.Red,
+            textColor = text.getCategoryColor(),
             style = CtvTypography.body.copy(
                 fontWeight = FontWeight.Normal
             )

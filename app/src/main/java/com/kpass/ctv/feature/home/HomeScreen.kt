@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.kpass.ctv.R
+import com.kpass.ctv.feature.root.NavGroup
 import com.kpass.ctv.ui.componet.modifier.ctvClickable
 import com.kpass.ctv.ui.theme.Body
 import com.kpass.ctv.ui.theme.Caption
@@ -122,6 +123,17 @@ fun HomeScreen(
                     rippleEnable = true
                 ) {
                     Log.d("TAG", "HomeScreen: gigigi")
+                    navController.navigate(
+                        NavGroup.Home.INFO.name.replace(
+                            "{category}", i.category
+                        ).replace(
+                            "{videoId}", i.url
+                        ).replace(
+                            "{location}", i.location
+                        ).replace(
+                            "{detailLocation}", i.detailLocation
+                        )
+                    )
                 },
                 painter = painterResource(id = i.image),
                 contentDescription = "${i.category} 이미지 미리보기",

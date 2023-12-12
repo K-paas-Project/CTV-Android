@@ -6,6 +6,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import com.kpass.ctv.ui.theme.CtvColor
 
@@ -13,8 +14,18 @@ import com.kpass.ctv.ui.theme.CtvColor
 internal fun String.getCategoryColor() =
     when(this) {
         "산불" -> CtvColor.Red
-        "홍수" -> CtvColor.Blue
+        "쓰나미" -> CtvColor.Blue
+        "홍수" -> CtvColor.Gray100
         "안전" -> CtvColor.Green
+        else -> CtvColor.Transparent
+    }
+
+internal fun String.getCategoryBackgroundColor() =
+    when(this) {
+        "산불" -> CtvColor.RedBackground
+        "쓰나미" -> Color(0xFFDEE3FF)
+        "홍수" -> Color(0xFFF8D5C6)
+        "안전" -> Color(0xFFCCF9E6)
         else -> CtvColor.Transparent
     }
 

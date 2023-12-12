@@ -11,6 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +26,8 @@ import com.kpass.ctv.ui.theme.CtvTheme
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
+val LocalNavigationState = compositionLocalOf { mutableStateOf(true) }
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,27 +35,31 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val coroutineScope = rememberCoroutineScope()
             var selectedTab: NavGroup by remember { mutableStateOf(NavGroup.Home.MAIN) }
+            val localNavigationState = remember { mutableStateOf(true) }
             CtvTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Scaffold(
-                        bottomBar = {
-                            BottomNavigation(
-                                selectedTab = selectedTab,
-                                selectedTabCallback = {
-                                    coroutineScope.launch {
-                                        selectedTab = it
-                                    }
-                                }, navController = navController)
-                        }
+                CompositionLocalProvider(LocalNavigationState provides localNavigationState) {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
                     ) {
-                        Column(
-                            modifier = Modifier.padding(it)
+                        Scaffold(
+                            bottomBar = {
+                                BottomNavigation(
+                                    selectedTab = selectedTab,
+                                    selectedTabCallback = {
+                                        coroutineScope.launch {
+                                            selectedTab = it
+                                        }
+                                    },
+                                    navController = navController)
+                            }
                         ) {
-                            NavigationGraph(navController)
+                            Column(
+                                modifier = Modifier.padding(it)
+                            ) {
+                                NavigationGraph(navController)
+                            }
                         }
                     }
                 }
