@@ -115,4 +115,10 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    // exoplayer
+    implementation("com.google.android.exoplayer:exoplayer:2.18.0")
+
+    // webview
+    implementation("com.google.accompanist:accompanist-webview:0.30.1")
 }
