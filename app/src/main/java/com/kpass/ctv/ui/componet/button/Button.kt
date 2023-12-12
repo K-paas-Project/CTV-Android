@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +54,7 @@ fun CtvButton(
     isShadow: Boolean = true,
     enabled: Boolean = true,
     shape: Shape = CtvTheme.shape.veryLarge,
+    style: TextStyle = CtvTypography.body.copy(fontWeight = FontWeight.Medium),
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     contentPadding: PaddingValues = PaddingValues(vertical = 13.dp, horizontal = 24.dp),
@@ -87,7 +89,7 @@ fun CtvButton(
                             if (enabled) type.buttonColor
                             else type.disableColor
                         ),
-                        style = CtvTypography.body.copy(fontWeight = FontWeight.Medium)
+                        style = style
                     )
                 }
             }

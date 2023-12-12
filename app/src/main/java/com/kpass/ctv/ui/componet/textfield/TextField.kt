@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,22 +46,35 @@ import com.kpass.ctv.ui.theme.CtvShape
 import com.kpass.ctv.ui.theme.CtvTheme
 import com.kpass.ctv.ui.theme.CtvTypography
 import com.kpass.ctv.ui.theme.CustomText
+import kotlin.math.min
 
 
 @Preview(showSystemUi = true)
 @Composable
 private fun preview() {
     var text by remember { mutableStateOf("") }
-    CtvTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = text,
-        hint = "아이디를 입력하세요.",
-        onDeleteButton = {
-            text = ""
-        },
-        type = KeyboardType.Password
-    ) {
-        text = it
+    Column {
+        CtvTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = text,
+            hint = "아이디를 입력하세요.",
+            onDeleteButton = {
+                text = ""
+            },
+            type = KeyboardType.Password
+        ) {
+            text = it
+        }
+
+        CtvEditTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 115.dp),
+            value = text,
+            hint = "설명을 입력하세요.",
+            onValueChange = { text = it},
+            singleLine = false
+        )
     }
 }
 
@@ -135,3 +150,48 @@ fun CtvTextField(
     }
 }
 
+
+@Composable
+fun CtvEditTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    hint: String = "",
+    onValueChange: (String) -> Unit,
+    singleLine: Boolean = true,
+
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+) {
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+    var isFocus by remember { mutableStateOf(false) }
+    CompositionLocalProvider {
+        BasicTextField(
+            modifier = modifier
+                .border(1.5.dp, CtvTheme.color.TextFieldStroke, RoundedCornerShape(15.dp))
+                .focusRequester(focusRequester)
+                .onFocusChanged {
+                    isFocus = it.isFocused
+                },
+            value = value,
+            textStyle = CtvTheme.typography.body.copy(
+                fontWeight = FontWeight.SemiBold
+            ),
+            onValueChange = onValueChange,
+            keyboardOptions = keyboardOptions,
+            singleLine = singleLine,
+            cursorBrush = SolidColor(Color.Black),
+        ) { innerTextField ->
+            Box(modifier = Modifier.padding(20.dp)) {
+                innerTextField()
+                if (!isFocus && value.isEmpty()) {
+                    CustomText(
+                        text = hint,
+                        textColor = Color(0xFF9099A6),
+                        style = CtvTypography.body.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
+            }
+        }
+    }
+}

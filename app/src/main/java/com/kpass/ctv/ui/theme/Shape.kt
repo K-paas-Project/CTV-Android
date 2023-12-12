@@ -24,7 +24,7 @@ class CtvShape(
     val large: CornerBasedShape =
         RoundedCornerShape(CtvRadius.middle),
     val veryLarge: CornerBasedShape =
-        RoundedCornerShape(CtvRadius.infinity),
+        RoundedCornerShape(CtvRadius.veryLarge),
     val infinity: CornerBasedShape =
         RoundedCornerShape(CtvRadius.infinity),
     val circle: CornerBasedShape = CircleShape

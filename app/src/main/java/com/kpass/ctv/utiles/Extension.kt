@@ -15,7 +15,7 @@ internal fun String.getCategoryColor() =
     when(this) {
         "산불" -> CtvColor.Red
         "쓰나미" -> CtvColor.Blue
-        "홍수" -> CtvColor.Gray100
+        "홍수" -> CtvColor.Brown
         "안전" -> CtvColor.Green
         else -> CtvColor.Transparent
     }
